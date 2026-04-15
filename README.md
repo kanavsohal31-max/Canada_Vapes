@@ -1,5 +1,5 @@
 # Canada_Vapes
-# Customer Loyalty & Churn Analysis – Canada Vapes
+# Customer Loyalty & Churn Analysis
 
 ---
 
