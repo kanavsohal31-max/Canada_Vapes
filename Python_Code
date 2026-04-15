@@ -1,0 +1,38 @@
+#DatasetCleanup
+pip install unidecode
+from unidecode import unidecode
+df = pd.read_csv("canadavapes_1.csv")
+import pandas as pd
+print(df.head())
+print("Shape of dataset:", df.shape)
+print(df.info())
+print(df.isnull().values.any())
+print(df.isnull().sum())
+print("Total missing values in dataset:", df.isnull().sum().sum())
+missing_values = df.isnull().sum()
+print(missing_values[missing_values > 0])
+missing_percent = (df.isnull().sum() / len(df)) * 100
+print(missing_percent)
+df['Name'] = df['Name'].fillna('Unknown')
+df['City'] = df['City'].fillna('Unknown')
+df['Region'] = df['Region'].fillna('Unknown')
+df['Postal Code'] = df['Postal Code'].fillna('Unknown')
+print(df.isnull().sum())
+df.to_excel("cleaned_data.xlsx", index=False)
+print(df.duplicated().any())
+duplicates = df[df.duplicated()]
+print(duplicates)
+duplicates = df[df.duplicated(subset=['Name', 'Postal Code'], keep=False)]
+print(duplicates)
+print("Total duplicate rows:", df.duplicated(subset=['Name', 'Postal Code']).sum())
+print(df.duplicated(subset=['Name', 'Postal Code']).any())
+duplicates = df[df.duplicated(subset=['Name', 'Postal Code'], keep=False)]
+print(duplicates)
+print(df.duplicated(subset=['Name', 'Postal Code']).sum())
+dup_groups = df.groupby(['Name', 'Postal Code']).size().reset_index(name='Count')
+print(dup_groups[dup_groups['Count'] > 1])
+df_clean = df.drop_duplicates(subset=['Name', 'Postal Code'], keep='first')
+df.to_excel("cleaned_data.xlsx", index=False)
+print(df['City'].unique())
+df['City'] = df['City'].apply(lambda x: unidecode(str(x)))
+df['City'] = df['City'].str.title()
